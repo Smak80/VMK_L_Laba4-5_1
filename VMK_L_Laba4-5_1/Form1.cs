@@ -6,12 +6,13 @@ namespace VMK_L_Laba4_5_1
         {
             InitializeComponent();
             _animator = new Animator(aPanel.CreateGraphics());
+            _animator.Start();
         }
 
         private Animator _animator;
         private void aPanel_Click(object sender, EventArgs e)
         {
-            _animator.Start();
+            _animator.AddCircle();
         }
     }
 }

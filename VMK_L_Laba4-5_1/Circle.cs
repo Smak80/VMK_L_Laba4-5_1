@@ -13,6 +13,7 @@ namespace VMK_L_Laba4_5_1
         public float X { get; set; }
         public float Y { get; set; }
         public SizeF ContainerSize { get; set; }
+        private Thread? t;
 
         private Random _r = new Random();
         private float _dx = 2;
@@ -39,7 +40,7 @@ namespace VMK_L_Laba4_5_1
                 );
         }
 
-        public bool Move()
+        private bool Move()
         {
             if (X < ContainerSize.Width - Radius - _dx)
             {
@@ -48,6 +49,21 @@ namespace VMK_L_Laba4_5_1
             }
 
             return false;
+        }
+
+        public void Start()
+        {
+            if (t == null || !t.IsAlive)
+            {
+                t = new Thread(() =>
+                {
+                    while (Move())
+                    {
+                        Thread.Sleep(30);
+                    }
+                });
+                t.Start();
+            }
         }
     }
 }
