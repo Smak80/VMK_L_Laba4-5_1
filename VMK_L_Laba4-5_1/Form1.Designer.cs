@@ -41,7 +41,8 @@
             this.aPanel.Name = "aPanel";
             this.aPanel.Size = new System.Drawing.Size(679, 508);
             this.aPanel.TabIndex = 0;
-            this.aPanel.Click += new System.EventHandler(this.aPanel_Click);
+            this.aPanel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.aPanel_MouseClick);
+            this.aPanel.Resize += new System.EventHandler(this.aPanel_Resize);
             // 
             // Form1
             // 
@@ -51,6 +52,7 @@
             this.Controls.Add(this.aPanel);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.ResumeLayout(false);
 
         }

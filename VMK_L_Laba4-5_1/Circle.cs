@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace VMK_L_Laba4_5_1
+﻿namespace VMK_L_Laba4_5_1
 {
     public class Circle
     {
@@ -14,7 +8,15 @@ namespace VMK_L_Laba4_5_1
         public float Y { get; set; }
         public SizeF ContainerSize { get; set; }
         private Thread? t;
-
+        private static bool stop = false;
+        
+        // Поле и свойство для приостановки работы потока шариков
+        private static bool pause = false;
+        public static bool IsPaused => pause;
+        
+        // Чтобы шарики на паузе не удалились из массива "живых",
+        // добавляем в свойство IsAlive значение паузы
+        public bool IsAlive => pause || (t?.IsAlive ?? false);
         private Random _r = new Random();
         private float _dx = 2;
         public Circle(SizeF containerSize)
@@ -47,7 +49,6 @@ namespace VMK_L_Laba4_5_1
                 X += _dx;
                 return true;
             }
-
             return false;
         }
 
@@ -55,15 +56,34 @@ namespace VMK_L_Laba4_5_1
         {
             if (t == null || !t.IsAlive)
             {
+                stop = false;
                 t = new Thread(() =>
                 {
-                    while (Move())
+                    // Добавляем проверку свойства паузы
+                    while (!stop && !IsPaused && Move())
                     {
                         Thread.Sleep(30);
                     }
                 });
+                t.IsBackground = true;
                 t.Start();
             }
+        }
+
+        public static void StopAllCircles()
+        {
+            stop = true;
+        }
+
+        // Метод, приостанавливающий все шарики
+        public static void Pause()
+        {
+            pause = true;
+        }
+        // Метод, возобновляющий движение всех шариков
+        public static void Resume()
+        {
+            pause = false;
         }
     }
 }
